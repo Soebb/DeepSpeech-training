@@ -7,7 +7,7 @@ from setuptools import find_packages, setup
 
 
 def main():
-    version = '0.9.3'
+    version = '0.10.0'
 
     install_requires_base = [
         'absl-py',
@@ -29,7 +29,7 @@ def main():
     ]
 
     decoder_pypi_dep = [
-        'ds_ctcdecoder == 0.9.3'
+        'ds_ctcdecoder == 0.10.0'
     ]
 
     tensorflow_pypi_dep = [
