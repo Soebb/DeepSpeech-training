@@ -69,7 +69,7 @@ def main():
 
 
     setup(
-        name='deepspeech_training',
+        name='deepspeech',
         version=version,
         description='Training code for DeepSpeech',
         url='https://github.com/mozilla/DeepSpeech',
