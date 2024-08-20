@@ -3,14 +3,11 @@ import platform
 import sys
 from pathlib import Path
 
-from pkg_resources import parse_version
 from setuptools import find_packages, setup
 
 
 def main():
-    version_file = Path(__file__).parent / 'VERSION'
-    with open(str(version_file)) as fin:
-        version = fin.read().strip()
+    version = '0.9.3'
 
     install_requires_base = [
         'absl-py',
@@ -32,7 +29,7 @@ def main():
     ]
 
     decoder_pypi_dep = [
-        'ds_ctcdecoder == {}'.format(version)
+        'ds_ctcdecoder == 0.9.3'
     ]
 
     tensorflow_pypi_dep = [
