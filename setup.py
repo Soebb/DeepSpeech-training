@@ -33,7 +33,7 @@ def main():
     ]
 
     tensorflow_pypi_dep = [
-        'tensorflow == 1.15.4'
+        'tensorflow == 2.5.3'
     ]
 
     horovod_pypi_dep = [
