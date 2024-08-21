@@ -24,16 +24,6 @@ def main():
     numpy_include = os.getenv('NUMPY_INCLUDE', numpy_include)
     numpy_min_ver = os.getenv('NUMPY_DEP_VERSION', '')
 
-    project_name = 'deepspeech'
-    if '--project_name' in sys.argv:
-        project_name_idx = sys.argv.index('--project_name')
-        project_name = sys.argv[project_name_idx + 1]
-        sys.argv.remove('--project_name')
-        sys.argv.pop(project_name_idx)
-
-    with open('../../training/deepspeech_training/VERSION', 'r') as ver:
-        project_version = ver.read().strip()
-
     class BuildExtFirst(build):
         sub_commands = [('build_ext', build.has_ext_modules),
                         ('build_py', build.has_pure_modules),
@@ -66,12 +56,12 @@ def main():
                        libraries=list(map(lambda x: x.strip(), libs_split(os.getenv('MODEL_LIBS', '')))),
                        swig_opts=['-c++', '-keyword'])
 
-    setup(name=project_name,
+    setup(name='deepspeech',
           description='A library for running inference on a DeepSpeech model',
           long_description=read('README.rst'),
           long_description_content_type='text/x-rst; charset=UTF-8',
           author='Mozilla',
-          version=project_version,
+          version='0.9.3',
           package_dir={'deepspeech': '.'},
           cmdclass={'build': BuildExtFirst},
           license='MPL-2.0',
