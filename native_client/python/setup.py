@@ -7,22 +7,18 @@ import os
 import subprocess
 import sys
 
-def main():
-    try:
+class get_numpy_include(object):
+    """Defer numpy.get_include() until after numpy is installed."""
+
+    def __str__(self):
         import numpy
-        try:
-            numpy_include = numpy.get_include()
-        except AttributeError:
-            numpy_include = numpy.get_numpy_include()
-    except ImportError:
-        numpy_include = ''
-        assert 'NUMPY_INCLUDE' in os.environ
+        return numpy.get_include()
+
+def main():
 
     def read(fname):
         return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
-    numpy_include = os.getenv('NUMPY_INCLUDE', numpy_include)
-    numpy_min_ver = os.getenv('NUMPY_DEP_VERSION', '')
 
     class BuildExtFirst(build):
         sub_commands = [('build_ext', build.has_ext_modules),
@@ -51,17 +47,18 @@ def main():
 
     ds_ext = Extension(name='deepspeech._impl',
                        sources=['impl.i'],
-                       include_dirs=[numpy_include, '../'],
+                       include_dirs=[get_numpy_include(), '../'],
                        library_dirs=list(map(lambda x: x.strip(), lib_dirs_split(os.getenv('MODEL_LDFLAGS', '')))),
                        libraries=list(map(lambda x: x.strip(), libs_split(os.getenv('MODEL_LIBS', '')))),
                        swig_opts=['-c++', '-keyword'])
 
+    project_version='0.9.3'
     setup(name='deepspeech',
           description='A library for running inference on a DeepSpeech model',
           long_description=read('README.rst'),
           long_description_content_type='text/x-rst; charset=UTF-8',
           author='Mozilla',
-          version='0.9.3',
+          version=project_version,
           package_dir={'deepspeech': '.'},
           cmdclass={'build': BuildExtFirst},
           license='MPL-2.0',
@@ -75,7 +72,7 @@ def main():
           ext_modules=[ds_ext],
           py_modules=['deepspeech', 'deepspeech.client', 'deepspeech.impl'],
           entry_points={'console_scripts':['deepspeech=deepspeech.client:main']},
-          install_requires=['numpy%s' % numpy_min_ver],
+          install_requires=['numpy==1.19.5'],
           include_package_data=True,
           classifiers=[
               'Development Status :: 3 - Alpha',
